@@ -46,12 +46,69 @@ function getBaseUrl(): string
     return $scheme . '://' . $host;
 }
 
+function getBasePath(): string
+{
+    static $basePath = null;
+
+    if ($basePath !== null) {
+        return $basePath;
+    }
+
+    $docRoot = $_SERVER['DOCUMENT_ROOT'] ?? '';
+    $rootDir = realpath(__DIR__ . '/..');
+
+    if ($docRoot !== '' && $rootDir !== false) {
+        $normalizedDocRoot = rtrim(str_replace('\\', '/', $docRoot), '/');
+        $normalizedRootDir = rtrim(str_replace('\\', '/', $rootDir), '/');
+
+        if ($normalizedDocRoot !== '' && strpos($normalizedRootDir, $normalizedDocRoot) === 0) {
+            $relative = substr($normalizedRootDir, strlen($normalizedDocRoot));
+            if ($relative === false || $relative === '') {
+                return $basePath = '';
+            }
+
+            return $basePath = '/' . ltrim($relative, '/');
+        }
+    }
+
+    $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+    if ($scriptName !== '') {
+        $scriptDir = str_replace('\\', '/', dirname($scriptName));
+        if ($scriptDir === '\\' || $scriptDir === '/' || $scriptDir === '.') {
+            return $basePath = '';
+        }
+
+        if (substr($scriptDir, -6) === '/admin') {
+            $scriptDir = substr($scriptDir, 0, -6);
+        }
+
+        return $basePath = $scriptDir === '/' ? '' : $scriptDir;
+    }
+
+    return $basePath = '';
+}
+
+function assetUrl(string $path): string
+{
+    $normalizedPath = '/' . ltrim($path, '/');
+    $basePath = rtrim(getBasePath(), '/');
+
+    if ($basePath === '') {
+        return $normalizedPath;
+    }
+
+    return $basePath . $normalizedPath;
+}
+
 function buildAbsoluteUrl(string $path): string
 {
     $base = rtrim(getBaseUrl(), '/');
+    $basePath = rtrim(getBasePath(), '/');
     $normalizedPath = '/' . ltrim($path, '/');
 
-    return $base . $normalizedPath;
+    $fullPath = $basePath === '' ? $normalizedPath : $basePath . $normalizedPath;
+
+    return $base . $fullPath;
 }
 
 function findArticleBySlug(array $articles, string $slug): ?array

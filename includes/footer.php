@@ -25,23 +25,25 @@
         </div>
         <div>
             <h3>Bültene Katılın</h3>
-            <form class="newsletter-form">
+            <form class="newsletter-form" action="/subscribe.php" method="post" novalidate>
                 <label for="newsletter-email" class="sr-only">E-posta</label>
-                <input id="newsletter-email" type="email" placeholder="E-posta adresiniz">
+                <input id="newsletter-email" name="email" type="email" placeholder="E-posta adresiniz" required>
                 <button type="submit" class="btn">Abone Ol</button>
+                <p class="form-feedback" role="status" aria-live="polite"></p>
             </form>
         </div>
     </div>
-    <div class="container footer-bottom">
-        <span>&copy; <?php echo date('Y'); ?> Haber Merkezi. Tüm hakları saklıdır.</span>
-        <div class="footer-links">
-            <a href="#">Kullanım Şartları</a>
-            <a href="#">Gizlilik Politikası</a>
-            <a href="#">İletişim</a>
-            <a href="/rss.php">RSS</a>
+        <div class="container footer-bottom">
+            <span>&copy; <?php echo date('Y'); ?> Haber Merkezi. Tüm hakları saklıdır.</span>
+            <div class="footer-links">
+                <a href="#">Kullanım Şartları</a>
+                <a href="#">Gizlilik Politikası</a>
+                <a href="#">İletişim</a>
+                <a href="/rss.php">RSS</a>
+                <a href="/admin/">Yönetim</a>
+            </div>
         </div>
-    </div>
 </footer>
-<script src="/assets/js/main.js" defer></script>
+<script src="<?php echo htmlspecialchars(assetUrl('assets/js/main.js'), ENT_QUOTES, 'UTF-8'); ?>" defer></script>
 </body>
 </html>
