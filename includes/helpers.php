@@ -2,48 +2,111 @@
 
 declare(strict_types=1);
 
+function getIstanbulTimeZone(): \DateTimeZone
+{
+    static $timezone = null;
+
+    if (!$timezone instanceof \DateTimeZone) {
+        $timezone = new \DateTimeZone('Europe/Istanbul');
+    }
+
+    return $timezone;
+}
+
+function createIstanbulDateTime(string $isoString): \DateTimeImmutable
+{
+    $timezone = getIstanbulTimeZone();
+
+    try {
+        $date = new \DateTimeImmutable($isoString, $timezone);
+    } catch (\Throwable $exception) {
+        $date = new \DateTimeImmutable('now', $timezone);
+    }
+
+    return $date->setTimezone($timezone);
+}
+
 function formatDateTime(string $isoString): string
 {
     static $formatter = null;
+    static $intlAvailable = null;
 
-    if ($formatter === null) {
-        $formatter = new \IntlDateFormatter(
-            'tr_TR',
-            \IntlDateFormatter::LONG,
-            \IntlDateFormatter::SHORT,
-            'Europe/Istanbul',
-            \IntlDateFormatter::GREGORIAN,
-            'd MMMM y HH:mm'
-        );
+    if ($intlAvailable === null) {
+        $intlAvailable = class_exists('\\IntlDateFormatter');
     }
 
-    $date = new \DateTime($isoString);
-    return $formatter->format($date);
+    $date = createIstanbulDateTime($isoString);
+
+    if ($intlAvailable) {
+        if (!$formatter instanceof \IntlDateFormatter) {
+            try {
+                $formatter = new \IntlDateFormatter(
+                    'tr_TR',
+                    \IntlDateFormatter::LONG,
+                    \IntlDateFormatter::SHORT,
+                    'Europe/Istanbul',
+                    \IntlDateFormatter::GREGORIAN,
+                    'd MMMM y HH:mm'
+                );
+            } catch (\Throwable $exception) {
+                $intlAvailable = false;
+                $formatter = null;
+            }
+        }
+
+        if ($formatter instanceof \IntlDateFormatter) {
+            $formatted = $formatter->format($date);
+            if ($formatted !== false) {
+                return $formatted;
+            }
+        }
+    }
+
+    return $date->format('d.m.Y H:i');
 }
 
 function formatShortTime(string $isoString): string
 {
     static $formatter = null;
+    static $intlAvailable = null;
 
-    if ($formatter === null) {
-        $formatter = new \IntlDateFormatter(
-            'tr_TR',
-            \IntlDateFormatter::NONE,
-            \IntlDateFormatter::SHORT,
-            'Europe/Istanbul',
-            \IntlDateFormatter::GREGORIAN,
-            'HH:mm'
-        );
+    if ($intlAvailable === null) {
+        $intlAvailable = class_exists('\\IntlDateFormatter');
     }
 
-    $date = new \DateTime($isoString);
-    return $formatter->format($date);
+    $date = createIstanbulDateTime($isoString);
+
+    if ($intlAvailable) {
+        if (!$formatter instanceof \IntlDateFormatter) {
+            try {
+                $formatter = new \IntlDateFormatter(
+                    'tr_TR',
+                    \IntlDateFormatter::NONE,
+                    \IntlDateFormatter::SHORT,
+                    'Europe/Istanbul',
+                    \IntlDateFormatter::GREGORIAN,
+                    'HH:mm'
+                );
+            } catch (\Throwable $exception) {
+                $intlAvailable = false;
+                $formatter = null;
+            }
+        }
+
+        if ($formatter instanceof \IntlDateFormatter) {
+            $formatted = $formatter->format($date);
+            if ($formatted !== false) {
+                return $formatted;
+            }
+        }
+    }
+
+    return $date->format('H:i');
 }
 
 function formatRssDate(string $isoString): string
 {
-    $date = new \DateTime($isoString);
-    $date->setTimezone(new \DateTimeZone('Europe/Istanbul'));
+    $date = createIstanbulDateTime($isoString);
 
     return $date->format(DATE_RSS);
 }
