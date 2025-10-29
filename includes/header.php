@@ -48,7 +48,7 @@ if (isset($homeFeedUrl)) {
             <div class="top-bar__left">
                 <span class="top-bar__time"><?php echo strftime('%e %B %Y, %A'); ?></span>
                 <span class="top-bar__ticker-label">Canlı Akış</span>
-                <div class="top-bar__ticker" id="liveTicker" data-messages='<?php echo json_encode($liveTicker, JSON_UNESCAPED_UNICODE); ?>'></div>
+                <div class="top-bar__ticker" id="liveTicker" data-messages='<?php echo htmlspecialchars(json_encode($liveTicker, JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8'); ?>'></div>
             </div>
             <div class="top-bar__right">
                 <form class="search-form" action="/search.php" method="get">
