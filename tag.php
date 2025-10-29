@@ -41,7 +41,7 @@ require __DIR__ . '/includes/header.php';
                     <img src="<?php echo htmlspecialchars($article['image'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8'); ?>">
                 </a>
                 <div class="card__content">
-                    <span class="badge badge--outline"><?php echo htmlspecialchars($categories[$article['category']], ENT_QUOTES, 'UTF-8'); ?></span>
+                    <span class="badge badge--outline"><?php echo htmlspecialchars(resolveCategoryName($categories, $article['category']), ENT_QUOTES, 'UTF-8'); ?></span>
                     <h2><a href="/article.php?slug=<?php echo urlencode($article['slug']); ?>"><?php echo htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8'); ?></a></h2>
                     <p><?php echo htmlspecialchars($article['excerpt'], ENT_QUOTES, 'UTF-8'); ?></p>
                     <div class="meta">

@@ -14,7 +14,7 @@ $breakingFeed = array_map(static function (array $article) use ($categories): ar
         'slug' => $article['slug'],
         'title' => $article['title'],
         'category' => $article['category'],
-        'category_name' => $categories[$article['category']] ?? $article['category'],
+        'category_name' => resolveCategoryName($categories, $article['category']),
         'excerpt' => $article['excerpt'],
         'published_at' => $article['published_at'],
     ];
@@ -37,7 +37,7 @@ $liveUpdates = array_slice($liveTicker, 0, 6);
                 <img src="<?php echo htmlspecialchars($featuredArticle['image'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($featuredArticle['title'], ENT_QUOTES, 'UTF-8'); ?>">
             </a>
             <div class="hero__content">
-                <span class="badge badge--primary"><?php echo htmlspecialchars($categories[$featuredArticle['category']], ENT_QUOTES, 'UTF-8'); ?></span>
+                <span class="badge badge--primary"><?php echo htmlspecialchars(resolveCategoryName($categories, $featuredArticle['category']), ENT_QUOTES, 'UTF-8'); ?></span>
                 <h1><a href="/article.php?slug=<?php echo urlencode($featuredArticle['slug']); ?>"><?php echo htmlspecialchars($featuredArticle['title'], ENT_QUOTES, 'UTF-8'); ?></a></h1>
                 <p><?php echo htmlspecialchars($featuredArticle['excerpt'], ENT_QUOTES, 'UTF-8'); ?></p>
                 <div class="meta">
@@ -51,7 +51,7 @@ $liveUpdates = array_slice($liveTicker, 0, 6);
             <h2>Manşetler</h2>
             <?php foreach ($secondaryArticles as $article): ?>
                 <article class="headline">
-                    <span class="badge"><?php echo htmlspecialchars($categories[$article['category']], ENT_QUOTES, 'UTF-8'); ?></span>
+                    <span class="badge"><?php echo htmlspecialchars(resolveCategoryName($categories, $article['category']), ENT_QUOTES, 'UTF-8'); ?></span>
                     <h3><a href="/article.php?slug=<?php echo urlencode($article['slug']); ?>"><?php echo htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8'); ?></a></h3>
                     <p><?php echo htmlspecialchars($article['excerpt'], ENT_QUOTES, 'UTF-8'); ?></p>
                 </article>
@@ -73,7 +73,7 @@ $liveUpdates = array_slice($liveTicker, 0, 6);
         >
             <?php foreach ($latestStories as $story): ?>
                 <article class="breaking-news__item" role="listitem" data-article="<?php echo htmlspecialchars($story['slug'], ENT_QUOTES, 'UTF-8'); ?>">
-                    <span class="badge badge--ghost"><?php echo htmlspecialchars($categories[$story['category']], ENT_QUOTES, 'UTF-8'); ?></span>
+                    <span class="badge badge--ghost"><?php echo htmlspecialchars(resolveCategoryName($categories, $story['category']), ENT_QUOTES, 'UTF-8'); ?></span>
                     <h3><a href="/article.php?slug=<?php echo urlencode($story['slug']); ?>"><?php echo htmlspecialchars($story['title'], ENT_QUOTES, 'UTF-8'); ?></a></h3>
                     <time datetime="<?php echo htmlspecialchars($story['published_at'], ENT_QUOTES, 'UTF-8'); ?>" data-relative-time="true"><?php echo formatShortTime($story['published_at']); ?></time>
                 </article>
@@ -94,7 +94,7 @@ $liveUpdates = array_slice($liveTicker, 0, 6);
                         <img src="<?php echo htmlspecialchars($article['image'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8'); ?>">
                     </a>
                     <div class="card__content">
-                        <span class="badge badge--outline"><?php echo htmlspecialchars($categories[$article['category']], ENT_QUOTES, 'UTF-8'); ?></span>
+                        <span class="badge badge--outline"><?php echo htmlspecialchars(resolveCategoryName($categories, $article['category']), ENT_QUOTES, 'UTF-8'); ?></span>
                         <h3><a href="/article.php?slug=<?php echo urlencode($article['slug']); ?>"><?php echo htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8'); ?></a></h3>
                         <p><?php echo htmlspecialchars($article['excerpt'], ENT_QUOTES, 'UTF-8'); ?></p>
                         <div class="meta">
@@ -135,7 +135,7 @@ $liveUpdates = array_slice($liveTicker, 0, 6);
                     <img src="<?php echo htmlspecialchars($article['image'], ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8'); ?>">
                 </a>
                 <div class="in-depth__content">
-                    <span class="badge badge--outline"><?php echo htmlspecialchars($categories[$article['category']], ENT_QUOTES, 'UTF-8'); ?></span>
+                    <span class="badge badge--outline"><?php echo htmlspecialchars(resolveCategoryName($categories, $article['category']), ENT_QUOTES, 'UTF-8'); ?></span>
                     <h3><a href="/article.php?slug=<?php echo urlencode($article['slug']); ?>"><?php echo htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8'); ?></a></h3>
                     <p><?php echo htmlspecialchars($article['excerpt'], ENT_QUOTES, 'UTF-8'); ?></p>
                     <div class="meta">

@@ -32,7 +32,7 @@ $relatedArticles = fetchRelatedArticles($article['slug']);
 <section class="container article-layout">
     <article class="article">
         <div class="article__meta">
-            <span class="badge badge--primary"><?php echo htmlspecialchars($categories[$article['category']], ENT_QUOTES, 'UTF-8'); ?></span>
+            <span class="badge badge--primary"><?php echo htmlspecialchars(resolveCategoryName($categories, $article['category']), ENT_QUOTES, 'UTF-8'); ?></span>
             <h1><?php echo htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8'); ?></h1>
             <div class="meta">
                 <span><?php echo htmlspecialchars($article['author'], ENT_QUOTES, 'UTF-8'); ?></span>

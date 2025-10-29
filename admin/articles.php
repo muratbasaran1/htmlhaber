@@ -36,7 +36,7 @@ require __DIR__ . '/header.php';
                             <strong><?php echo htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8'); ?></strong><br>
                             <small><?php echo htmlspecialchars($article['slug'], ENT_QUOTES, 'UTF-8'); ?></small>
                         </td>
-                        <td><?php echo htmlspecialchars($categories[$article['category']] ?? $article['category'], ENT_QUOTES, 'UTF-8'); ?></td>
+                        <td><?php echo htmlspecialchars(resolveCategoryName($categories, $article['category']), ENT_QUOTES, 'UTF-8'); ?></td>
                         <td><?php echo htmlspecialchars(formatDateTime($article['published_at']), ENT_QUOTES, 'UTF-8'); ?></td>
                         <td class="admin-table__actions">
                             <a class="btn btn--ghost" href="/admin/article-edit.php?slug=<?php echo urlencode($article['slug']); ?>">Düzenle</a>

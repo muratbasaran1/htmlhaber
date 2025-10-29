@@ -171,3 +171,24 @@ function getTagUsage(array $articles): array
 
     return array_values($usage);
 }
+
+function resolveCategoryName(array $categories, string $slug): string
+{
+    if ($slug !== '' && isset($categories[$slug])) {
+        return $categories[$slug];
+    }
+
+    if ($slug !== '') {
+        $readable = trim(preg_replace('/[-_]+/u', ' ', $slug));
+        if ($readable !== '') {
+            return mb_convert_case($readable, MB_CASE_TITLE, 'UTF-8');
+        }
+    }
+
+    $firstKey = array_key_first($categories);
+    if ($firstKey !== null && isset($categories[$firstKey])) {
+        return $categories[$firstKey];
+    }
+
+    return 'Genel';
+}

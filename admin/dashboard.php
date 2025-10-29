@@ -52,7 +52,7 @@ require __DIR__ . '/header.php';
             <article class="admin-card">
                 <h3><?php echo htmlspecialchars($article['title'], ENT_QUOTES, 'UTF-8'); ?></h3>
                 <p class="admin-card__meta">
-                    <?php echo htmlspecialchars($categories[$article['category']] ?? $article['category'], ENT_QUOTES, 'UTF-8'); ?> ·
+                    <?php echo htmlspecialchars(resolveCategoryName($categories, $article['category']), ENT_QUOTES, 'UTF-8'); ?> ·
                     <?php echo htmlspecialchars(formatDateTime($article['published_at']), ENT_QUOTES, 'UTF-8'); ?>
                 </p>
                 <p><?php echo htmlspecialchars($article['excerpt'], ENT_QUOTES, 'UTF-8'); ?></p>

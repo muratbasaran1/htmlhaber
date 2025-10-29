@@ -21,7 +21,7 @@ $latestPayload = array_map(static function (array $article) use ($categories): a
         'title' => $article['title'],
         'excerpt' => $article['excerpt'],
         'category' => $article['category'],
-        'category_name' => $categories[$article['category']] ?? $article['category'],
+        'category_name' => resolveCategoryName($categories, $article['category']),
         'published_at' => $article['published_at'],
     ];
 }, $latestArticles);
