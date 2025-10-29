@@ -11,6 +11,18 @@ $siteTagline = $siteSettings['site_tagline'] ?? 'Türkiye ve dünyadan en güven
 $primaryColor = $siteSettings['primary_color'] ?? '#d62828';
 $secondaryColor = $siteSettings['secondary_color'] ?? '#003049';
 
+$liveTickerMessages = $liveTicker ?? [];
+if (!is_array($liveTickerMessages)) {
+    $liveTickerMessages = [];
+}
+
+$liveTickerJson = json_encode($liveTickerMessages, JSON_UNESCAPED_UNICODE);
+if ($liveTickerJson === false) {
+    $liveTickerJson = '[]';
+}
+
+$liveTickerAttribute = htmlspecialchars($liveTickerJson, ENT_QUOTES, 'UTF-8');
+
 if (!isset($pageTitle)) {
     $pageTitle = $siteName;
 }
@@ -48,7 +60,7 @@ if (isset($homeFeedUrl)) {
             <div class="top-bar__left">
                 <span class="top-bar__time"><?php echo strftime('%e %B %Y, %A'); ?></span>
                 <span class="top-bar__ticker-label">Canlı Akış</span>
-                <div class="top-bar__ticker" id="liveTicker" data-messages='<?php echo htmlspecialchars(json_encode($liveTicker, JSON_UNESCAPED_UNICODE), ENT_QUOTES, 'UTF-8'); ?>'></div>
+                <div class="top-bar__ticker" id="liveTicker" data-messages='<?php echo $liveTickerAttribute; ?>'></div>
             </div>
             <div class="top-bar__right">
                 <form class="search-form" action="/search.php" method="get">
